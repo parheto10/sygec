@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Etat Civil - {{ extraits.num_extrait }}</title>
+    <!--<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div id="image" class="col-md-3">
+<!--                <img src="static/img/amoirie.png" class="img-responsive" width="50" height="50">#} -->
+                <img src='http://127.0.0.1/sygec/agec/static/img/amoirie.png' alt="" class="img-responsive" width="50" height="50">
+            </div>
+            <div class="col-md-9 text-capitalize text-center">
+                <h2 style="font-size: 14px"><strong>Extrait</strong><br>
+                    du Registre des actes de <br>
+                    l'Etat Civil pour l'année {{ extraits.annee }}
+                </h2>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3 text-left" style="font-size: 12px">
+                <p>de <span class="text-muted"> la MAIRIE DE {{ extraits.mairie }}</span></p>
+                <p>centre de <span class="text-muted">{{ extraits.mairie }}</span></p>
+                <p>N° <span class="text-danger text-muted">{{ extraits.num_extrait }} du registre</span></p>
+                <p class="text-center"><hr/></p>
+
+                <p class="text-">
+                    NAISSANCE DE
+                </p>
+                <p class="text-danger text-center">
+                    {{ extraits.nom }} <br/>
+                    {{ extraits.prenoms }}
+                </p>
+            </div>
+            <div class="col-md-9 text-right">
+                <p>le <span>{{ extraits.date_naiss|date }} à {{ extraits.heure_naiss }}</span></p>
+                <p>est né(e) <span>{{ extraits.nom }} {{ extraits.prenoms }}</span></p>
+                <p>à <span>{{ extraits.hopital }}</span></p>
+                <p> Fils(le) de <span>{{ extraits.pere }} - {{ extraits.profession_pere }}</span></p>
+                <p>Nationalité </p>
+                <p> et de <span>{{ extraits.mere }} - {{ extraits.profession_mere }}</span></p>
+                <p>Nationalité </p>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12" style="font-size: 14px">
+            <hr>
+            <p>Marié le {{ extraits.mariage }}......à {{ extraits.lieu_mariage }}</p>
+            <p>Marié le {{ extraits.conjoint }}</p>
+            <p>MAriage dissous par décision de divorce en date du {{ extraits.divorce }}</p>
+            <p>Marié le {{ extraits.deces }}......à {{ extraits.lieu_deces }}</p>
+            <p>Certifié le présent extrait conforme aux indications portées au registre</p>
+            <clearfix></clearfix>
+            <clearfix></clearfix>
+            <br>
+            <p class="text-right">Délivré à <span>Séguéla</span>, le <span>{% now  ''%}</span></p>
+            <br>
+            <br>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-left">Timbre</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="text-right">Signature et Caché de l'autorité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous">
+    </script>
+{#    <script src="{% static 'js/jquery.min.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+</body>
+</html>
