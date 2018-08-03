@@ -29,9 +29,11 @@ class ExtraitsAdmin(admin.ModelAdmin):
     list_filter = ('hopital',)
     search_fields = ['num_extrait', 'nom',]
     ordering = ['date_naiss',]
+    #exclude=("num_extrait ",)
+    readonly_fields=('num_extrait', )
     fieldsets = (
         ('INFORMATIONS GENERALES', {"fields": ('archive',('annee', 'num_extrait'), ('document'),)}),
-        ('INFORMATIONS PERSONNELES', {"fields": (('sexe', 'hopital') ,('nom', 'prenoms'), ('date_naiss', 'heure_naiss'), ('jugement', 'num_jugement'), )}),
+        ('INFORMATIONS PERSONNELES', {"fields": (('sexe', 'commune', 'hopital') ,('nom', 'prenoms'), ('date_naiss', 'heure_naiss'), ('jugement', 'num_jugement'), )}),
         ('PARENTS', {"fields": (('mere'), ('date_naiss_mere', 'lieu_naiss_mere'), ('nationalite_mere', 'profession_mere'), ('pere'),('date_naiss_pere', 'lieu_naiss_pere'), ('nationalite_pere', 'profession_pere'), )}),
         #('MENTIONS (EVENTUELLEMENT)', {"fields": (('mariage', 'lieu_mariage'), 'conjoint', ('divorce', 'deces'), 'lieu_deces')}),
     )

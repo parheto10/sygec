@@ -1,68 +1,94 @@
-{% load staticfiles %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} Etat Civil | {{ extrait.nom }} {{ extrait.prenoms }} {% endblock %}</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Extrait - {{extraits.num_extrait }}</title>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div id="image" class="col-md-3">
-                <img src="#" alt="" class="img-responsive" width="50" height="50">
-            </div>
-            <div class="col-md-9 text-capitalize text-center">
-                <h2 style="font-size: 14px"><strong>Extrait</strong><br>
-                    du Registre des actes de <br>
-                    l'Etat Civil pour l'année {{ extrait.annee }}
-                </h2>
-            </div>
-        </div>
+    <div id="content-main">
+        <header>
+            <div id="nav">
+                <nav id="info_mairie">
+                    <p>de la MAIRIE DE {{ extraits.commune }}</p>
+                    <p>centre de {{ extraits.commune }}</p>
+                    <img src="127.0.0.1:8000/agec/static/img/amoirie.png" alt="" width="100" height="100">
+                    <p>N°{{ extraits.num_extrait }} du registre</p>
+                    <p class="text-center"><hr/></p>
+                    <p>
+                        NAISSANCE de
+                    </p>
+                    <p>
+                        {{ extraits.nom }} <br/>
+                        {{ extraits.prenoms}}
+                    </p>
+                </nav>
 
-        <div class="row">
-            <div class="col-md-3" style="font-size: 12px">
-                <p>de <span class="text-muted">LA COMMUNE DE {{ extrait.commune }}</span></p>
-                <p>centre de <span class="text-muted">{{ extrait.centre }}</span></p>
-                <p>N° <span class="text-danger text-muted">{{ extrait.numero_registre }} du registre</span></p>
-                <p class="text-center"><hr/></p>
+                <div id="registre">
+                    <h2 style="font-size: 14px"><strong>Extrait</strong><br>
+                        du Registre des actes de l'Etat Civil<br>
+                        pour l'année {{ extraits.annee }}
+                    </h2>
 
-                <p class="text-left">
-                    NAISSANCE DE
-                </p>
-                <p class="text-danger">
-                    {{ extrait.nom }} {{ extrait.prenoms }}
-                </p>
-            </div>
-            <div class="col-md-9 text-right">
-                <p>le <span>{{ extrait.date_naiss }} à {{ extrait.heure_naiss }}</span></p>
-                <p>est ne <span>{{ extrait.prenoms }}</span></p>
-                <p>à <span>{{ extrait.maternite }}</span></p>
-                <p> Fils(le) de <span>{{ extrait.pere }} - {{ extrait.profession_pere }}</span></p>
-                <p> et de <span>{{ extrait.mere }} - {{ extrait.profession_mere }}</span></p>
-            </div>
-        </div>
+                    <section>
+                        <aside>
+                            <p>
+                                le {{ extraits.date_naiss }} à {{ extraits.heure_naiss }} est né(e) - {{ extrait.nom }} {{ extraits.prenoms }}
+                            </p>
+                            <p>
+                                à {{ extraits.hopital }}
+                            </p>
+                            <p>
+                                Fils(le) de {{ extaits.pere }}
+                            </p>
+                            <p>
+                                Nationalité {{ extraits.nationalite_pere }}
+                            </p>
 
-        <div class="col-md-12" style="font-size: 14px">
-            <p>Marié le {{ extrait.mariage }}......à {{ extrait.lieu_mariage }}</p>
-            <p>Nom et Prénoms Conjoint(e) {{ extrait.conjoint }}</p>
-            <p>Mariage dissous par décision de divorce en date du {{ extrait.divorce }}</p>
-            <p>Décédé le {{ extrait.deces }}......à {{ extrait.lieu_deces }}</p>
-            <p>Certifié le présent extrait conforme aux indications portées au registre</p>
-            <p class="text-right">Délivré à <span>Séguéla</span>, le <span>{% now  ''%}</span></p>
-            <br>
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="text-left">Timbre</p>
-                    </div>
-
-                    <div class="col-md-6">
-                        <p class="text-right">Signature et Caché de l'autorité</p>
-                    </div>
+                            <p>
+                                et de {{ extraits.mere }}
+                            </p>
+                            <p>
+                                Nationalité {{ extraits.nationalite_mere }}
+                            </p>
+                        </aside>
+                    </section>
                 </div>
             </div>
-        </div>
+        </header>
+        <hr/>
+        <section>
+            <article>
+                <h1>Mentions Eventuelles</h1>
+                <p>
+                    Marié(e) le ....................................... à ......................
+                </p>
+                <p>
+                    Mariage Dissous Par Decision de Divorce en Date du .........................
+                </p>
+                <p>
+                    Décédé le ................................... à ............................
+                </p>
+                <p>
+                    Certifié le présent extrait conforme aux indications portées au registre
+                </p>
+            </article>
+        </section>
 
+        <footer>
+            <p>
+                Délivré à <span>Séguéla</span>, le <span>{ Date de Retrait }</span>
+            </p>
+            <p>
+                Timbre
+            </p>
+            <p>
+               Signature et Caché de l'autorité
+            </p>
+        </footer>
     </div>
+
 </body>
 </html>

@@ -139,6 +139,7 @@ class Extrait(models.Model):
     date_naiss = models.DateField(verbose_name='DATE DE NAISSANCE')
     heure_naiss = models.TimeField(verbose_name='HEURE DE NAISSANCE', blank=True)
     hopital = models.ForeignKey(Centre)
+    commune = models.ForeignKey(Mairie)
     jugement = models.CharField(max_length=5, verbose_name="TRANSCRIPTION DE JUGEMENT SUPPLETIF ?", choices=Jugement_Choice, default="non")
     num_jugement = models.CharField(max_length=255, verbose_name="PRECISER LE NUMERO DU JUGEMENT SUPPLETIF", blank=True)
 
