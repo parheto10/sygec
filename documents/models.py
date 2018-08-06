@@ -44,7 +44,7 @@ class Jugement(models.Model):
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
     annee = models.IntegerField(verbose_name='ANNEE DU REGISTRE', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    num_jugement = models.CharField(max_length=150, blank=True, verbose_name='NUMERO JUGEMENT', help_text="UNIQUEMENT POUR LES ARCCHIVES")
+    num_jugement = models.CharField(max_length=150, blank=True, verbose_name='NUMERO JUGEMENT', help_text="UNIQUEMENT POUR LES ARCHIVES")
     document = models.CharField(max_length=150, verbose_name='NATURE DU DOCUMENT', choices=TYPE_DOC, default="copie")
 
     # informations recipiendaire
@@ -60,14 +60,14 @@ class Jugement(models.Model):
     # parents
     pere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
     nationalite_pere = models.CharField(max_length=250, verbose_name='NATIONALITE DU PERE', blank=True)
-    date_naiss_pere = models.DateField(verbose_name='DATE DE NAISSANCE DU PERE', blank=True)
+    date_naiss_pere = models.DateField(verbose_name='DATE DE NAISSANCE DU PERE', blank=True, null=True)
     lieu_naiss_pere = models.DateField(verbose_name='LIEU DE NAISSANCE DU PERE', blank=True)
     profession_pere = models.CharField(max_length=250, verbose_name='PROFESSION DU PERE', blank=True)
     domicile_pere = models.CharField(max_length=250, verbose_name='LIEU DE RESIDENCE DU PERE', blank=True)
 
     mere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE')
     nationalite_mere = models.CharField(max_length=250, verbose_name='NATIONALITE DE LA MERE', blank=True)
-    date_naiss_mere = models.DateField(verbose_name='DATE DE NAISSANCE DE LA MERE', blank=True)
+    date_naiss_mere = models.DateField(verbose_name='DATE DE NAISSANCE DE LA MERE', blank=True, null=True)
     lieu_naiss_mere = models.DateField(verbose_name='LIEU DE NAISSANCE DE LA MERE', blank=True)
     profession_mere = models.CharField(max_length=250, verbose_name='PROFESSION DE LA MERE', blank=True)
     domicile_mere = models.CharField(max_length=250, verbose_name='LIEU DE RESIDENCE DE LA MERE', blank=True)
@@ -129,7 +129,7 @@ class Extrait(models.Model):
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
     annee = models.IntegerField(verbose_name='ANNEE DU REGISTRE', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    num_extrait = models.CharField(max_length=150, blank=True, verbose_name='NUMERO EXTRAIT', help_text="UNIQUEMENT POUR LES ARCCHIVES")
+    num_extrait = models.CharField(max_length=150, blank=True, verbose_name='NUMERO EXTRAIT', help_text="UNIQUEMENT POUR LES ARCHIVES")
     document = models.CharField(max_length=150, verbose_name='NATURE DU DOCUMENT', choices=TYPE_DOC, default="normal")
 
     # informations recipiendaire
@@ -145,14 +145,14 @@ class Extrait(models.Model):
 
     # parents
     pere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
-    date_naiss_pere = models.DateField(verbose_name='DATE NAISSANCE PERE', blank=True)
+    date_naiss_pere = models.DateField(verbose_name='DATE NAISSANCE PERE', blank=True, null=True)
     lieu_naiss_pere = models.CharField(max_length=250, verbose_name='LIEU NAISSANCE PERE', blank=True)
     nationalite_pere = models.CharField(max_length=250, verbose_name='NATIONALITE DU PERE', blank=True)
     profession_pere = models.CharField(max_length=250, verbose_name='PROFESSION DU PERE', blank=True)
 
     # parents
     mere = models.CharField(max_length=250, verbose_name='NOM  ET PRENOMS DE LA MERE')
-    date_naiss_mere = models.DateField(verbose_name='DATE NAISSANCE MERE', blank=True)
+    date_naiss_mere = models.DateField(verbose_name='DATE NAISSANCE MERE', blank=True, null=True)
     lieu_naiss_mere = models.CharField(max_length=250, verbose_name='LIEU NAISSANCE MERE', blank=True)
     nationalite_mere = models.CharField(max_length=250, verbose_name='NATIONALITE DE LA MERE', blank=True)
     profession_mere = models.CharField(max_length=250, verbose_name='PROFESSION DE LA MERE', blank=True)
@@ -161,15 +161,21 @@ class Extrait(models.Model):
     modifier_le = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     def clean(self):
-        if self.archive == False and self.num_extrait != "":  raise ValidationError(
-            "Pour les nouveaux extraits, pas besoin de saisir le numero. Il est géré automatiquement par le système")
-        if self.jugement == "non" and self.num_jugement != "":
-            raise ValidationError(
-                "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !")
-        else:
-            if self.jugement == "oui" and self.num_jugement == "": raise ValidationError(
-                "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !"
-            )
+        if not self.id:
+            if self.archive == False and self.num_extrait != "":  raise ValidationError(
+                "Pour les nouveaux extraits, pas besoin de saisir le numero. Il est géré automatiquement par le système")
+            if self.date_naiss_mere != "" and self.date_naiss == self.date_naiss_mere:
+                raise ValidationError("Le le fils et la mere ont le meme age corriger!")
+            else:
+                if self.date_naiss_mere != "" and self.date_naiss < self.date_naiss_mere:
+                    raise ValidationError("Le système à Constater une Erreure sur la date de naissnace Mère Corriger SVP!")
+            if self.jugement == "non" and self.num_jugement != "":
+                raise ValidationError(
+                    "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !")
+            else:
+                if self.jugement == "oui" and self.num_jugement == "": raise ValidationError(
+                    "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !"
+                )
 
     def EXTRAIT(self):
         return "<a href='/pdf/extrait/?numero=%s' target='_blank'>Consulter</a>" % (self.num_extrait)
@@ -182,19 +188,19 @@ class Extrait(models.Model):
         verbose_name = "Acte de naissance"
 
     def save(self, force_insert=False, force_update=False):
+        # numerotation automatique
+        if self.archive == False:
+            if not self.id:
+                last_number = 2000
+                tot = Extrait.objects.count()
+                numero = last_number + tot
+                madate = datetime.date.today()
+                self.num_extrait = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
+
         self.nom = self.nom.upper()
         self.prenoms = self.prenoms.upper()
         self.pere = self.pere.upper()
         self.mere = self.mere.upper()
-
-        # numerotation automatique
-        if self.archive == False:
-            last_number = 500
-            tot = Extrait.objects.count()
-            numero = last_number + 1
-            madate = datetime.date.today()
-            self.num_extrait = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
-
         super(Extrait, self).save(force_insert, force_update)
 
 
@@ -209,16 +215,16 @@ class Mariage(models.Model):
 
     Regime = (
         ('simple', 'SIMPLE'),
-        ('communaute', 'COMUAUTE DE BIEN'),
+        ('communaute', 'COMMUAUTE DE BIEN'),
         ('separation', 'SEPARATION DE BIEN'),
     )
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
     annee = models.IntegerField(verbose_name='ANNEE DU REGISTRE', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    num_mariage = models.CharField(max_length=150, blank=True, verbose_name='NUMERO MARIAGE', help_text="UNIQUEMENT POUR LES ARCCHIVES")
+    num_mariage = models.CharField(max_length=150, blank=True, verbose_name='NUMERO MARIAGE', help_text="UNIQUEMENT POUR LES ARCHIVES")
     categorie = models.CharField(verbose_name='TYPE DE DOCUMENT', max_length=50, choices=TYPE_MENTION, default="mariage")
 
-    #emandeur
+    #demandeur
     demandeur = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS DU DEMANDEUR")
     date_naiss_demandeur = models.DateField(verbose_name="DATE DATE DE NAISSANCE DU DEMANDEUR", blank=True)
     lieu_naiss_demandeur = models.CharField(max_length=500, verbose_name="LIEU DE NASSANCE DU DEMANDEUR", blank=True)
@@ -265,14 +271,15 @@ class Mariage(models.Model):
         #self.mere = self.mere.upper()
 
         # numerotation automatique
-        if self.archive == False:
-            last_number = 500
-            tot = Mariage.objects.count()
-            numero = last_number + 1
-            madate = datetime.date.today()
-            self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
+        if not self.id:
+            if self.archive == False:
+                last_number = 500
+                tot = Mariage.objects.count()
+                numero = last_number + tot
+                madate = datetime.date.today()
+                self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
-        super(Mariage, self).save(force_insert, force_update)
+            super(Mariage, self).save(force_insert, force_update)
 
     def __unicode__(self):
         return 'MARIAGE ENTRE + %s + %s' % (self.demandeur, self.demandeur2)
@@ -287,7 +294,7 @@ class Deces(models.Model):
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
     annee = models.IntegerField(verbose_name='ANNEE DU REGISTRE', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    num_deces = models.CharField(max_length=150, blank=True, verbose_name='NUMERO DECES', help_text="UNIQUEMENT POUR LES ARCCHIVES")
+    num_deces = models.CharField(max_length=150, blank=True, verbose_name='NUMERO DECES', help_text="UNIQUEMENT POUR LES ARCHIVES")
     categorie = models.CharField(verbose_name='TYPE DE DOCUMENT', max_length=50, choices=TYPE_MENTION, default="deces")
 
     #informarions Personne decede

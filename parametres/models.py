@@ -105,12 +105,13 @@ class Mairie(models.Model):
     logo = models.ImageField(upload_to='logos', blank=True, null=True)
 
     def save(self, force_insert=False, force_update=False):
-        self.maire = self.maire.upper()
+        self.libelle = self.libelle.upper()
         super(Mairie, self).save(force_insert, force_update)
 
     def clean(self):
-        tot = Mairie.objects.count()
-        if tot != 0:   raise ValidationError("Mairie déjà créee")
+        if not self.id:
+            tot = Mairie.objects.count()
+            if tot != 0:   raise ValidationError("Mairie déjà créee")
 
     def __unicode__(self):
         return "%s" % self.libelle
@@ -138,9 +139,10 @@ class Centre(models.Model):
         return self.code.zfill(5).upper()
 
     def save(self, force_insert=False, force_update=False):
-        self.libelle = self.libelle.upper()
-        self.emplacement = self.emplacement.upper()
-        super(Centre, self).save(force_insert, force_update)
+        if not self.id:
+            self.libelle = self.libelle.upper()
+            self.emplacement = self.emplacement.upper()
+            super(Centre, self).save(force_insert, force_update)
 
     class Meta:
         verbose_name_plural = "CENTRES DE SANTE"

@@ -30,7 +30,7 @@ class ExtraitsAdmin(admin.ModelAdmin):
     search_fields = ['num_extrait', 'nom',]
     ordering = ['date_naiss',]
     #exclude=("num_extrait ",)
-    readonly_fields=('num_extrait', )
+    #readonly_fields=('num_extrait', )
     fieldsets = (
         ('INFORMATIONS GENERALES', {"fields": ('archive',('annee', 'num_extrait'), ('document'),)}),
         ('INFORMATIONS PERSONNELES', {"fields": (('sexe', 'commune', 'hopital') ,('nom', 'prenoms'), ('date_naiss', 'heure_naiss'), ('jugement', 'num_jugement'), )}),

@@ -134,6 +134,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     #'grappelli.dashboard',
+    'south',
     'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,7 +147,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'annoying',
-    'south',
 
     'documents',
     'parametres',
