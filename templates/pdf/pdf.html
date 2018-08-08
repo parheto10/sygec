@@ -5,90 +5,91 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Extrait - {{extraits.num_extrait }}</title>
+    <title>Extrait N°{{ extraits.num_extrait }}</title>
+    <style>
+        #container {
+            width: 900px;
+            margin: auto;
+
+        }
+        #content1 {
+            padding: 0px;
+        }
+        #header {
+            float: left;
+            width: 300px;
+        }
+        #main {
+            float: right;
+            width: 580px;
+        }
+        #content2 {
+            clear: both;
+        }
+        #content2 .article {
+            text-align: right;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-    <div id="content-main">
-        <header>
-            <div id="nav">
-                <nav id="info_mairie">
-                    <p>de la MAIRIE DE {{ extraits.commune }}</p>
-                    <p>centre de {{ extraits.commune }}</p>
-                    <img src="127.0.0.1:8000/agec/static/img/amoirie.png" alt="" width="100" height="100">
-                    <p>N°{{ extraits.num_extrait }} du registre</p>
-                    <p class="text-center"><hr/></p>
-                    <p>
-                        NAISSANCE de
-                    </p>
-                    <p>
-                        {{ extraits.nom }} <br/>
-                        {{ extraits.prenoms}}
-                    </p>
-                </nav>
-
-                <div id="registre">
-                    <h2 style="font-size: 14px"><strong>Extrait</strong><br>
-                        du Registre des actes de l'Etat Civil<br>
-                        pour l'année {{ extraits.annee }}
-                    </h2>
-
-                    <section>
-                        <aside>
-                            <p>
-                                le {{ extraits.date_naiss }} à {{ extraits.heure_naiss }} est né(e) - {{ extrait.nom }} {{ extraits.prenoms }}
-                            </p>
-                            <p>
-                                à {{ extraits.hopital }}
-                            </p>
-                            <p>
-                                Fils(le) de {{ extaits.pere }}
-                            </p>
-                            <p>
-                                Nationalité {{ extraits.nationalite_pere }}
-                            </p>
-
-                            <p>
-                                et de {{ extraits.mere }}
-                            </p>
-                            <p>
-                                Nationalité {{ extraits.nationalite_mere }}
-                            </p>
-                        </aside>
-                    </section>
-                </div>
+    <div id="container">
+        <div id="content1">
+            <div id="header">
+                <p style="text-decoration: underline;">REPUBLIQUE DE COTE D'IVOIRE</p>
+                <p style="text-decoration: underline;"><span> COMMUNE DE {{ extraits.commune }}</span></p>
+                <p style="text-decoration: underline;"><span> MAIRIE DE {{ extraits.commune }}</span></p>
+                <p><img src="E:\Projet Python\sygec\agec\static\img\amoirie.png" alt="" width="100" height="100"></p>
+                <h2 style="text-align: center">ETAT CIVIL <br />CENTRE</h2>
+                <p><span> de {{ extraits.commune }}</span></p>
+                <p>N° {{ extraits.num_extrait }} <span class="text-danger text-muted"> du Registre </span></p>
+                <p>
+                    NAISSANCE DE
+                </p>
+                <p style="text-align: center">
+                    {{ extraits.nom }} <br/>
+                    {{ extraits.prenoms }}
+                </p>
             </div>
-        </header>
-        <hr/>
-        <section>
-            <article>
-                <h1>Mentions Eventuelles</h1>
-                <p>
-                    Marié(e) le ....................................... à ......................
-                </p>
-                <p>
-                    Mariage Dissous Par Decision de Divorce en Date du .........................
-                </p>
-                <p>
-                    Décédé le ................................... à ............................
-                </p>
-                <p>
-                    Certifié le présent extrait conforme aux indications portées au registre
-                </p>
-            </article>
-        </section>
+            <div id="main">
+                <section>
+                    <article>
+                        <h2 style="text-align: center"><strong>Extrait</strong><br>
+                            du Registre des actes de <br>
+                            l'Etat Civil pour l'année {{ extraits.annee }}
+                        </h2>
+                        <p>le <span>{{ extraits.date_naiss }} à {{ extraits.heure_naiss }}</span></p>
+                        <p>est né(e) <span>{{ extraits.nom }} {{ extraits.prenoms }}</span></p>
+                        <p>à <span>{{ extraits.hopital }}</span></p>
+                        <p> Fils(le) de <span>{{ extraits.pere }} - {{ extraits.profession_pere }}</span></p>
+                        <p>Nationalité  {{ extraits.nationalite_pere}}</p>
+                        <p> et de <span>{{ extraits.mere }} - {{ extraits.profession_mere }}</span></p>
+                        <p>Nationalité {{ extraits.nationalite_mere}}</p>
+                    </article>
+                </section>
+            </div>
+        </div>
+        <div id="content2">
+            <section>
+                <h3 style="text-align: center">MENTIONS (éventuellement)</h3>
+                <p>Mari(é) le {{ extraits.mariage }}..............................................................................................................
+                    à {{ extraits.lieu_mariage }}..........................................</p>
+                <p>Avec {{ extraits.conjoint }}....................................
+                    ...............................................................................................................................................................</p>
+                <p>Mariage dissous par décision de divorce en date du {{ extraits.divorce }}............................................................................................................................</p>
+                <p>...................................................................................................................................................................................................................</p>
+                <p>Décédé le {{ extraits.deces }} ..............................................................................................................à {{ extraits.lieu_deces }}...................................................</p>
+                <p>Certifié le présent extrait conforme aux indications portées au registre.</p>
+            </section>
+            <div style="text-align: right; display: inline-block">
+                <p>Délivré à {{extraits.commune}}, le <span>{% now  ''%}</span></p>
+                <p>L'Officier de l'ETAT Civil</p>
+                <p>L'Agent de l'ETAT Civil</p>
+                <p>(Signature)</p>
+            </div>
+        </div>
 
-        <footer>
-            <p>
-                Délivré à <span>Séguéla</span>, le <span>{ Date de Retrait }</span>
-            </p>
-            <p>
-                Timbre
-            </p>
-            <p>
-               Signature et Caché de l'autorité
-            </p>
-        </footer>
+
     </div>
-
 </body>
 </html>

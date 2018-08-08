@@ -164,18 +164,29 @@ class Extrait(models.Model):
         if not self.id:
             if self.archive == False and self.num_extrait != "":  raise ValidationError(
                 "Pour les nouveaux extraits, pas besoin de saisir le numero. Il est géré automatiquement par le système")
-            if self.date_naiss_mere != "" and self.date_naiss == self.date_naiss_mere:
-                raise ValidationError("Le le fils et la mere ont le meme age corriger!")
-            else:
-                if self.date_naiss_mere != "" and self.date_naiss < self.date_naiss_mere:
-                    raise ValidationError("Le système à Constater une Erreure sur la date de naissnace Mère Corriger SVP!")
-            if self.jugement == "non" and self.num_jugement != "":
-                raise ValidationError(
-                    "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !")
-            else:
-                if self.jugement == "oui" and self.num_jugement == "": raise ValidationError(
-                    "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !"
-                )
+
+        if self.date_naiss_mere != "" and self.date_naiss <= self.date_naiss_mere:
+            raise ValidationError("Le système à Constater une Erreure sur la date de naissnace de la Mère, Corriger SVP!")
+
+        if self.date_naiss_pere != "" and self.date_naiss <= self.date_naiss_pere:
+            raise ValidationError("Le système à Constater une Erreure sur la date de naissnace du Père, Corriger SVP!")
+
+
+        if self.jugement == "non" and self.num_jugement != "":
+            raise ValidationError(
+                "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !")
+        else:
+            if self.jugement == "oui" and self.num_jugement == "": raise ValidationError(
+                "VEUILLEZ PRECISER LE NUMERO DU JUGEMENT SUPPLETIF SVP !"
+            )
+
+        # numerotation automatique
+        if not self.id and self.archive == False:
+            last_number = 2000
+            tot = Extrait.objects.count()
+            numero = last_number + tot
+            madate = datetime.date.today()
+            self.num_extrait = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
     def EXTRAIT(self):
         return "<a href='/pdf/extrait/?numero=%s' target='_blank'>Consulter</a>" % (self.num_extrait)
@@ -188,15 +199,6 @@ class Extrait(models.Model):
         verbose_name = "Acte de naissance"
 
     def save(self, force_insert=False, force_update=False):
-        # numerotation automatique
-        if self.archive == False:
-            if not self.id:
-                last_number = 2000
-                tot = Extrait.objects.count()
-                numero = last_number + tot
-                madate = datetime.date.today()
-                self.num_extrait = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
-
         self.nom = self.nom.upper()
         self.prenoms = self.prenoms.upper()
         self.pere = self.pere.upper()
@@ -271,15 +273,14 @@ class Mariage(models.Model):
         #self.mere = self.mere.upper()
 
         # numerotation automatique
-        if not self.id:
-            if self.archive == False:
-                last_number = 500
-                tot = Mariage.objects.count()
-                numero = last_number + tot
-                madate = datetime.date.today()
-                self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
+        if self.archive == False:
+            last_number = 500
+            tot = Mariage.objects.count()
+            numero = last_number + tot
+            madate = datetime.date.today()
+            self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
-            super(Mariage, self).save(force_insert, force_update)
+        super(Mariage, self).save(force_insert, force_update)
 
     def __unicode__(self):
         return 'MARIAGE ENTRE + %s + %s' % (self.demandeur, self.demandeur2)
