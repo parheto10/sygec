@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="E:\Projet Python\sygec\agec\static\assets\css\style.css" />
+    <title>Extrait N°{{ extraits.num_extrait }}</title>
+</head>
+<body>
+<div class="container">
+    <div id="partie1">
+        <div class="mou">
+	    	<div class="droit">
+	            <h1>EXTRAIT</h1>
+	            <h4 style="font-weight: normal; margin-top: -10px;">du Registre des actes de l'Etat Civil<br>pour l'année {{ extraits.annee }}</h4>
+	            <div class="inff">
+	                <h5>Le {{ extraits.date_naiss }} à {{ extraits.heure_naiss }}</h5>
+	                <h5>est né {{ extraits.nom }} {{ extraits.prenoms }} </h5>
+                    <h5>à {{ extraits.hopital }}  </h5>
+	                <h5>fil de {{ extraits.pere }} - {{ extraits.profession_pere }}</h5>
+                    <h5>Nationalité  {{ extraits.nationalite_pere }}</h5>
+	                <h5>et de {{ extraits.mere }} - {{ extraits.profession_mere }}</h5>
+                    <h5>Nationalité  {{ extraits.nationalite_mere }}</h5>
+		        </div>
+			</div>
+		</div>
+        <!-------------------------------------------->
+        <div class="gauche">
+			<h5 style="font-weight: normal;">REPUBLIQUE DE COTE D'IVOIRE</h5>
+			<hr width="40px">
+			<h5 style="margin-top: -2px;">COMMUNE DE {{ extraits.commune }}</h5>
+			<hr width="40px">
+			<h5 style="margin-top: -2px;">MAIRIE DE {{ extraits.commune }}</h5>
+			<hr width="40px">
+			<img style="text-align: center; margin-top: -2px; margin-left: 5px; " src="E:\Projet Python\sygec\agec\static\img\amoirie.png" height="100px" width="120px">
+			<h4>ETAT CIVILE <br> CENTRE</h4>
+			<hr width="40px">
+			<h5 class="non">de {{ extraits.commune }}</h5>
+			<h5 class="non">N° {{ extraits.num_extrait }} du Régistre</h5>
+			<hr width="40px">
+			<h6>NAISSANCE DE :</h6>
+			<h6 style="margin-top: -5px">
+                {{ extraits.nom }}<br>
+                {{ extraits.prenoms }}<br>
+                <br>...................................................<br>...................................................
+                <br>...................................................<br>...................................................</h6>
+		</div>
+    </div>
+    <hr>
+	<hr style="margin-top: -1px;">
+
+    <div class="partie2">
+        <h3>MENTIONS (éventuellement)</h3>
+        Marié (e) le.....................................................................................................à...............................................................................
+        <br>avec.................................................................................................................................................................
+        <br>Mariage dissous par décision de divorce en date du..............................................................................................................................................................................................
+        <br>.............................................................................................................................................................................................................
+        <br>décédé le..................................................................................................à...............................................................................
+        <br>Certifié le présent extrait conforme aux normes incations portées au registre.
+
+        <div class="oui">
+        	<p>Délivré à SEGUELA, le ..............................</p>
+        	<p>L'Officier de L'Etat Civil</p>
+        	<p>L'Agent de L'Etat Civil </p>
+        	<p style="margin-right:5%; ">(Signature)</p>
+        </div>
+        <div class="timbres">
+        	<h3>Timbre Fiscale</h3>
+        	<h4 style="float: right; margin-right:35%;">Sceau</h4>
+        </div>
+    </div>
+</div>
+</body>
+</html>

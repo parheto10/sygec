@@ -182,7 +182,7 @@ class Extrait(models.Model):
 
         # numerotation automatique
         if not self.id and self.archive == False:
-            last_number = 2000
+            last_number = 5000
             tot = Extrait.objects.count()
             numero = last_number + tot
             madate = datetime.date.today()

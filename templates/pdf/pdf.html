@@ -19,6 +19,15 @@
             float: left;
             width: 300px;
         }
+        #header p:after {
+            border-bottom:1px solid;
+            display: block;
+            margin:0 auto;
+            content: " ";
+            width:50px;
+            width:50px;
+            left:-50px;
+        }
         #main {
             float: right;
             width: 580px;
@@ -32,45 +41,50 @@
         }
     </style>
 </head>
-<body>
+<body class="wrapper">
     <div id="container">
         <div id="content1">
-            <div id="header">
-                <p style="text-decoration: underline;">REPUBLIQUE DE COTE D'IVOIRE</p>
-                <p style="text-decoration: underline;"><span> COMMUNE DE {{ extraits.commune }}</span></p>
-                <p style="text-decoration: underline;"><span> MAIRIE DE {{ extraits.commune }}</span></p>
-                <p><img src="E:\Projet Python\sygec\agec\static\img\amoirie.png" alt="" width="100" height="100"></p>
+            <div id="header" style="text-align: center; display: inline-block; margin: 0px">
+                <p>REPUBLIQUE DE COTE D'IVOIRE</p>
+                <p><span> COMMUNE DE {{ extraits.commune }}</span></p>
+                <p style="font-weight: bold;"><span> MAIRIE DE {{ extraits.commune }}</span></p>
+                <img src="E:\Projet Python\sygec\agec\static\img\amoirie.png" alt="" width="150" height="150">
                 <h2 style="text-align: center">ETAT CIVIL <br />CENTRE</h2>
                 <p><span> de {{ extraits.commune }}</span></p>
                 <p>N° {{ extraits.num_extrait }} <span class="text-danger text-muted"> du Registre </span></p>
-                <p>
+                <h3 style="font-size: 16px; letter-spacing: 3px">
                     NAISSANCE DE
-                </p>
-                <p style="text-align: center">
+                </h3>
+                <p>
                     {{ extraits.nom }} <br/>
                     {{ extraits.prenoms }}
                 </p>
             </div>
-            <div id="main">
+            <div id="main" style="margin-top: 50px;">
                 <section>
                     <article>
-                        <h2 style="text-align: center"><strong>Extrait</strong><br>
-                            du Registre des actes de <br>
-                            l'Etat Civil pour l'année {{ extraits.annee }}
-                        </h2>
-                        <p>le <span>{{ extraits.date_naiss }} à {{ extraits.heure_naiss }}</span></p>
-                        <p>est né(e) <span>{{ extraits.nom }} {{ extraits.prenoms }}</span></p>
-                        <p>à <span>{{ extraits.hopital }}</span></p>
-                        <p> Fils(le) de <span>{{ extraits.pere }} - {{ extraits.profession_pere }}</span></p>
-                        <p>Nationalité  {{ extraits.nationalite_pere}}</p>
-                        <p> et de <span>{{ extraits.mere }} - {{ extraits.profession_mere }}</span></p>
-                        <p>Nationalité {{ extraits.nationalite_mere}}</p>
+                        <h1 style="text-align: center; font-size: 22px; margin-bottom: 50px; letter-spacing: 8px;">EXTRAIT<br>
+                            <span style="font-weight: normal; letter-spacing: 1px;">
+                                du Registre des actes de l'Etat Civil<br>
+                                 pour l'année {{ extraits.annee }}
+                            </span>
+                        </h1>
+
+                        <asset style="letter-spacing: 3px; margin-top: 50px;">
+                            <p>le <span>{{ extraits.date_naiss }} à {{ extraits.heure_naiss }}</span></p>
+                            <p>est né(e) <span> {{ extraits.nom }} {{ extraits.prenoms }}</span></p>
+                            <p>à <span>{{ extraits.hopital }}</span></p>
+                            <p> Fils(le) de <span>{{ extraits.pere }} - {{ extraits.profession_pere }}</span></p>
+                            <p>Nationalité  {{ extraits.nationalite_pere}}</p>
+                            <p> et de <span>{{ extraits.mere }} - {{ extraits.profession_mere }}</span></p>
+                            <p>Nationalité {{ extraits.nationalite_mere}}</p>
+                        </asset>
                     </article>
                 </section>
             </div>
         </div>
         <div id="content2">
-            <section>
+            <section style="margin-top: 100px">
                 <h3 style="text-align: center">MENTIONS (éventuellement)</h3>
                 <p>Mari(é) le {{ extraits.mariage }}..............................................................................................................
                     à {{ extraits.lieu_mariage }}..........................................</p>

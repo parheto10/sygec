@@ -1,0 +1,107 @@
+#container{
+    border:1px solid black;
+    height: 950px;
+    width: 672px;
+    margin: auto;
+}
+
+.gauche{
+    padding-left: 5px;
+    margin-top: 20px;
+    overflow:inherit;
+    width: 35%;
+}
+
+.mou{
+    float:right;
+    height: 300px;
+    margin-top: -40px;
+    width: 65%;
+}
+.inff{
+    margin-top: 90px;
+}
+
+.inff h5 {
+    font-weight: normal;
+}
+hr{
+    background-color:black;
+    height: 1px;
+    margin-bottom: 2px;
+    line-height:0px;
+}
+h1,h2,h3,h4,h5,h6,hr,div{
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+img{
+    margin-left:60px;
+}
+
+#container>.part1>.gauche>hr{
+    width: 40px;
+}
+.droit{
+    padding-left: 9px;
+    margin-top: 120px;
+
+
+   overflow:inherit;
+
+
+}
+
+#container>.part1>.droit>h5{
+
+    margin-left: 200px;
+}
+#container>.part2>.timbres{
+    margin: auto;
+
+    width: 652px;
+}
+
+hr{
+    margin-bottom: 1px;
+}
+#container>.part2{
+    line-height: 20px;
+    margin-left: 20px;
+    text-align: left;
+    font-size: 12px;
+
+}
+
+#container>.part2>h4{
+    font-size:22px;
+    text-align: center;
+}
+
+.non{
+     overflow:initial;
+     text-align: left;
+ }
+
+.oui{
+     overflow:initial;
+     text-align: right;
+     margin-right: 30px;
+     line-height: 10px;
+ }
+
+ #container>.part1>.gauche>hr {
+    margin-top: -2px;
+ }
+
+#container>.part2>.timbres>h3 {
+    font-weight: normal;
+    text-align: center;
+    vertical-align:middle;
+    height: 90px;
+    width: 190px;
+    float: left;
+    border: 1px solid black;
+    margin-left: 20%;
+}
