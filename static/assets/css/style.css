@@ -6,20 +6,21 @@
 }
 
 .gauche{
-    padding-left: 5px;
-    margin-top: 20px;
-    overflow:inherit;
+    float:left;
+    text-align: left;
+    margin-top: 280px;
     width: 35%;
 }
 
 .mou{
     float:right;
-    height: 300px;
-    margin-top: -40px;
+    text-align: left;
+    margin-top: 20px;
     width: 65%;
 }
 .inff{
-    margin-top: 90px;
+    margin-top: 200px;
+    font-size: 20px;
 }
 
 .inff h5 {
@@ -27,12 +28,12 @@
 }
 hr{
     background-color:black;
-    height: 1px;
-    margin-bottom: 2px;
+    margin-top: -1px;
+    margin-bottom: 5px;
     line-height:0px;
 }
 h1,h2,h3,h4,h5,h6,hr,div{
-    margin-bottom: 0px;
+    margin-bottom: -10px;
     text-align: center;
 }
 
@@ -44,26 +45,20 @@ img{
     width: 40px;
 }
 .droit{
-    padding-left: 9px;
-    margin-top: 120px;
-
-
-   overflow:inherit;
-
-
+    padding-left: 1px;
+    margin-top: 10px;
 }
 
 #container>.part1>.droit>h5{
-
-    margin-left: 200px;
+    margin-left: 50px;
 }
 #container>.part2>.timbres{
     margin: auto;
-
     width: 652px;
 }
 
-hr{
+#separateur{
+    margin-top: 150px;
     margin-bottom: 1px;
 }
 #container>.part2{
@@ -80,7 +75,6 @@ hr{
 }
 
 .non{
-     overflow:initial;
      text-align: left;
  }
 
