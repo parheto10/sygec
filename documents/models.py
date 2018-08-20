@@ -138,7 +138,7 @@ class Extrait(models.Model):
     prenoms = models.CharField(max_length=250, verbose_name='PRENOMS')
     date_naiss = models.DateField(verbose_name='DATE DE NAISSANCE')
     heure_naiss = models.TimeField(verbose_name='HEURE DE NAISSANCE', blank=True)
-    hopital = models.ForeignKey(Centre)
+    hopital = models.ForeignKey(Centre, verbose_name="HOPITAL")
     commune = models.ForeignKey(Mairie)
     jugement = models.CharField(max_length=5, verbose_name="TRANSCRIPTION DE JUGEMENT SUPPLETIF ?", choices=Jugement_Choice, default="non")
     num_jugement = models.CharField(max_length=255, verbose_name="PRECISER LE NUMERO DU JUGEMENT SUPPLETIF", blank=True)
@@ -216,9 +216,8 @@ class Mariage(models.Model):
         YEAR_CHOICES.append((r, r))
 
     Regime = (
-        ('simple', 'SIMPLE'),
-        ('communaute', 'COMMUAUTE DE BIEN'),
-        ('separation', 'SEPARATION DE BIEN'),
+        ('communaute', 'COMMUAUTE DE BIENS'),
+        ('separation', 'SEPARATION DE BIENS'),
     )
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
@@ -227,40 +226,53 @@ class Mariage(models.Model):
     categorie = models.CharField(verbose_name='TYPE DE DOCUMENT', max_length=50, choices=TYPE_MENTION, default="mariage")
 
     #demandeur
-    demandeur = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS DU DEMANDEUR")
-    date_naiss_demandeur = models.DateField(verbose_name="DATE DATE DE NAISSANCE DU DEMANDEUR", blank=True)
-    lieu_naiss_demandeur = models.CharField(max_length=500, verbose_name="LIEU DE NASSANCE DU DEMANDEUR", blank=True)
-    contact_demandeur = models.CharField(max_length=250, verbose_name='CONTACT1 DEMANDEUR')
-    contact2_demandeur = models.CharField(max_length=250, verbose_name='CONTACT2 DEMANDEUR', blank=True)
-    profession_demandeur = models.CharField(max_length=500, verbose_name="PROFESSION DEMANDEUR", blank=True)
-    domicile_demandeur = models.CharField(max_length=500, verbose_name="DOMICILE DEMANDEUR", blank=True)
-    pere_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE DU DEMANDEUR', blank=True)
-    mere_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE DU DEMANDEUR', blank=True)
-    temoin_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU TEMOINS DU DEMANDEUR', blank=True)
+    demandeur = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS")
+    date_naiss_demandeur = models.DateField(verbose_name="DATE DATE DE NAISSANCE", blank=True)
+    lieu_naiss_demandeur = models.CharField(max_length=500, verbose_name="LIEU DE NASSANCE", blank=True)
+    contact_demandeur = models.CharField(max_length=250, verbose_name='CONTACT1')
+    contact2_demandeur = models.CharField(max_length=250, verbose_name='CONTACT2', blank=True)
+    profession_demandeur = models.CharField(max_length=500, verbose_name="PROFESSION", blank=True)
+    domicile_demandeur = models.CharField(max_length=500, verbose_name="DOMICILE", blank=True)
+    pere_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
+    mere_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE', blank=True)
+    temoin_demandeur = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU TEMOINS', blank=True)
 
     # Avec(Conjoint/conjointe)
-    demandeur2 = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS DU CONJOINT(E)")
-    date_naiss_demandeur2 = models.DateField(verbose_name="DATE DATE DE NAISSANCE DU CONJOINT(E)", blank=True)
-    lieu_naiss_demandeur2 = models.CharField(max_length=500, verbose_name="LIEU DE NASSANCE DU CONJOINT(E)", blank=True)
-    contact_demandeur2 = models.CharField(max_length=250, verbose_name='CONTACT1 CONJOINT(E)')
-    contact2_demandeur2 = models.CharField(max_length=250, verbose_name='CONTACT2 CONJOINT(E)', blank=True)
-    profession_demandeur2 = models.CharField(max_length=500, verbose_name="PROFESSION CONJOINT(E)", blank=True)
-    domicile_demandeur2 = models.CharField(max_length=500, verbose_name="DOMICILE CONJOINT(E)", blank=True)
-    pere_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE DU CONJOINT(E)', blank=True)
-    mere_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE DU CONJOINT(E)', blank=True)
-    temoin_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU TEMOINS DU CONJOINT(E)', blank=True)
+    demandeur2 = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS")
+    date_naiss_demandeur2 = models.DateField(verbose_name="DATE DATE DE NAISSANCE", blank=True)
+    lieu_naiss_demandeur2 = models.CharField(max_length=500, verbose_name="LIEU DE NASSANCE", blank=True)
+    contact_demandeur2 = models.CharField(max_length=250, verbose_name='CONTACT1')
+    contact2_demandeur2 = models.CharField(max_length=250, verbose_name='CONTACT2', blank=True)
+    profession_demandeur2 = models.CharField(max_length=500, verbose_name="PROFESSION", blank=True)
+    domicile_demandeur2 = models.CharField(max_length=500, verbose_name="DOMICILE", blank=True)
+    pere_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
+    mere_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE', blank=True)
+    temoin_demandeur2 = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU TEMOINS', blank=True)
 
     #details
     date_mariage = models.DateField(verbose_name="DATE MARIAGE")
-    heure_mariage = models.DateField(verbose_name="HEURE MARIAGE", blank=True)
-    regime = models.CharField(max_length=150, verbose_name="TYPE DE REGIME", choices=Regime)
+    heure_mariage = models.TimeField(verbose_name="HEURE MARIAGE", blank=True)
+    regime = models.CharField(max_length=150, verbose_name="PRECISER LE REGIME", choices=Regime)
     lieu_mariage = models.CharField(max_length=500, verbose_name="LIEU DU MARIAGE", blank=True)
     ajouter_le = models.DateTimeField(auto_now_add=True, auto_now=False)
     modifier_le = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     # divorce
-    date_divorce = models.DateField(max_length=250, verbose_name="DATE DIVORCE", blank=True)
+    date_divorce = models.DateField(max_length=250, verbose_name="DATE DIVORCE", blank=True, null=True)
     details_divorce = models.TextField(verbose_name="DETAILS DIVORCE", blank=True)
+
+    def clean(self):
+        if not self.id:
+            if self.archive == False and self.num_mariage != "":  raise ValidationError(
+                "Pour les nouveaux actes de Mariage, pas besoin de saisir le numero. Il est géré automatiquement par le système")
+
+            # numerotation automatique
+            if self.archive == False:
+                last_number = 5000
+                tot = Mariage.objects.count()
+                numero = last_number + tot
+                madate = datetime.date.today()
+                self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
     class Meta:
         verbose_name_plural = "ACTES DE MARIAGE"
@@ -271,15 +283,6 @@ class Mariage(models.Model):
         self.demandeur2 = self.demandeur2.upper()
         #self.pere = self.pere.upper()
         #self.mere = self.mere.upper()
-
-        # numerotation automatique
-        if self.archive == False:
-            last_number = 500
-            tot = Mariage.objects.count()
-            numero = last_number + tot
-            madate = datetime.date.today()
-            self.num_mariage = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
-
         super(Mariage, self).save(force_insert, force_update)
 
     def __unicode__(self):
@@ -291,6 +294,11 @@ class Deces(models.Model):
     for r in range(2000, (datetime.datetime.now().year + 1)):
         YEAR_CHOICES.append((r, r))
 
+    Sexe = (
+        ('M', 'Masculin'),
+        ('F', 'Feminin'),
+    )
+
     #infos Generales
     username = models.CharField(max_length=25, verbose_name="TRAITE PAR", editable=False)
     archive = models.BooleanField(default=False, verbose_name="ARCHIVE")
@@ -299,6 +307,7 @@ class Deces(models.Model):
     categorie = models.CharField(verbose_name='TYPE DE DOCUMENT', max_length=50, choices=TYPE_MENTION, default="deces")
 
     #informarions Personne decede
+    sexe = models.CharField(max_length=150, verbose_name='PRECISER LE SEXE', choices=Sexe, default="M")
     nom_et_prenoms = models.CharField(max_length=50, verbose_name="NOM ET PRENOMS")
     date_naiss = models.DateField(max_length=250, verbose_name="NE(E) LE", blank=True)
     lieu_naiss = models.CharField(max_length=250, verbose_name="LIEU DE NAISSANCE", blank=True)
@@ -310,28 +319,34 @@ class Deces(models.Model):
     mere = models.CharField(max_length=250, verbose_name="NOM ET PRENOMS DE LA MERE", blank=True)
 
     #details deces
-    date_deces = models.DateField(max_length=250, verbose_name="DATE DU DECES", blank=True)
-    heure_deces = models.TimeField(max_length=250, verbose_name="HEURE DU DECES", blank=True)
+    date_deces = models.DateField(max_length=250, verbose_name="DATE DU DECES")
+    heure_deces = models.TimeField(max_length=250, verbose_name="HEURE DU DECES", blank=True, null=True)
     lieu_deces = models.CharField(max_length=250, verbose_name="LIEU DU DECES", blank=True)
-    cause_deces = models.CharField(max_length=250, verbose_name="CAUSES DU DECES", blank=True)
+    cause_deces = models.TextField(max_length=250, verbose_name="CAUSES DU DECES", blank=True)
     ajouter_le = models.DateTimeField(auto_now_add=True, auto_now=False)
     modifier_le = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    def clean(self):
+        if not self.id:
+            if self.archive == False and self.num_deces != "":  raise ValidationError(
+                "Pour les nouveaux actes de Décès, pas besoin de saisir le numero. Il est géré automatiquement par le système")
+
+            # numerotation automatique
+            if self.archive == False:
+                last_number = 5000
+                tot = Deces.objects.count()
+                numero = last_number + tot
+                madate = datetime.date.today()
+                self.num_deces = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
     class Meta:
         verbose_name_plural = "ACTES DE DECES"
         verbose_name = "Acte de deces"
 
     def save(self, force_insert=False, force_update=False):
-        self.nom_et_prenoms = self.demandeur.upper()
-
-        # numerotation automatique
-        if self.archive == False:
-            last_number = 500
-            tot = Deces.objects.count()
-            numero = last_number + 1
-            madate = datetime.date.today()
-            self.num_deces = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
-
+        self.nom_et_prenoms = self.nom_et_prenoms.upper()
+        self.pere = self.pere.upper()
+        self.mere = self.mere.upper()
         super(Deces, self).save(force_insert, force_update)
 
     def __unicode__(self):

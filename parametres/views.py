@@ -20,5 +20,5 @@ def extraitPDF(request):
    numero = data["numero"]
    extrait = get_object_or_None(Extrait,num_extrait=numero)
    if not extrait:  return HttpResponse("numero extrait inconnu")
-   return render_to_pdf3("pdf/page.html",{"extraits":extrait})
+   return render_to_pdf3("pdf/extrait.html",{"extraits":extrait})
 
