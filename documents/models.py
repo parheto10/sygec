@@ -52,8 +52,8 @@ class Jugement(models.Model):
     nom = models.CharField(max_length=250, verbose_name='NOM')
     prenoms = models.CharField(max_length=250, verbose_name='PRENOMS')
     date_naiss = models.DateField(verbose_name='DATE DE NAISSANCE')
-    heure_naiss = models.TimeField(verbose_name='LIEU DE NAISSANCE')
-    hopital = models.ForeignKey(Centre)
+    heure_naiss = models.TimeField(verbose_name='HEURE DE NAISSANCE')
+    hopital = models.ForeignKey(Centre, verbose_name="HOPITAL")
     commune = models.ForeignKey(Mairie)
     officie = models.CharField(max_length=500, verbose_name="NOM ET PRENOMS OFFICIER")
 
@@ -61,25 +61,40 @@ class Jugement(models.Model):
     pere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
     nationalite_pere = models.CharField(max_length=250, verbose_name='NATIONALITE DU PERE', blank=True)
     date_naiss_pere = models.DateField(verbose_name='DATE DE NAISSANCE DU PERE', blank=True, null=True)
-    lieu_naiss_pere = models.DateField(verbose_name='LIEU DE NAISSANCE DU PERE', blank=True)
+    lieu_naiss_pere = models.CharField(verbose_name='LIEU DE NAISSANCE DU PERE', max_length=250, blank=True)
     profession_pere = models.CharField(max_length=250, verbose_name='PROFESSION DU PERE', blank=True)
     domicile_pere = models.CharField(max_length=250, verbose_name='LIEU DE RESIDENCE DU PERE', blank=True)
 
     mere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DE LA MERE')
     nationalite_mere = models.CharField(max_length=250, verbose_name='NATIONALITE DE LA MERE', blank=True)
     date_naiss_mere = models.DateField(verbose_name='DATE DE NAISSANCE DE LA MERE', blank=True, null=True)
-    lieu_naiss_mere = models.DateField(verbose_name='LIEU DE NAISSANCE DE LA MERE', blank=True)
+    lieu_naiss_mere = models.CharField(verbose_name='LIEU DE NAISSANCE DE LA MERE', max_length=250, blank=True)
     profession_mere = models.CharField(max_length=250, verbose_name='PROFESSION DE LA MERE', blank=True)
     domicile_mere = models.CharField(max_length=250, verbose_name='LIEU DE RESIDENCE DE LA MERE', blank=True)
     ajouter_le = models.DateTimeField(auto_now_add=True, auto_now=False)
     modifier_le = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    def __unicode__(self):
-        return 'Jugement Supplétif de + %s + %s' % (self.nom, self.prenoms)
-
     def clean(self):
-        if self.archive == False and self.num_jugement != "":  raise ValidationError(
-            "Pour les nouveaux Jugements, pas besoin de saisir le numero. Il est géré automatiquement par le système")
+        if not self.id:
+            if self.archive == False and self.num_jugement != "":  raise ValidationError(
+                "Pour les NOUVEAUX JUGEMENTS, pas besoin de saisir le numero. Il est géré automatiquement par le système")
+
+        if self.date_naiss_mere != "" and self.date_naiss <= self.date_naiss_mere:
+            raise ValidationError("Le système à Constater une Erreure sur la date de naissnace de la Mère, Corriger SVP!")
+
+        # if self.date_naiss_pere != "" and self.date_naiss <= self.date_naiss_pere:
+        #     raise ValidationError("Le système à Constater une Erreure sur la date de naissnace du Père, Corriger SVP!")
+
+        # numerotation automatique
+        if not self.id and self.archive == False:
+            last_number = 5000
+            tot = Jugement.objects.count()
+            numero = last_number + tot
+            madate = datetime.date.today()
+            self.num_jugement = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
+
+    def __unicode__(self):
+        return 'Jugement Supplétif de %s %s' % (self.nom, self.prenoms)
 
     class Meta:
         verbose_name_plural = "JUGEMENTS SUPPLETIFS"
@@ -88,24 +103,17 @@ class Jugement(models.Model):
     def save(self, force_insert=False, force_update=False):
         self.nom = self.nom.upper()
         self.prenoms = self.prenoms.upper()
-        self.hopital = self.hopital.upper()
         self.officie = self.officie.upper()
 
         self.pere = self.pere.upper()
         self.lieu_naiss_pere = self.lieu_naiss_pere.upper()
+        self.profession_pere = self.profession_pere.upper()
+        self.nationalite_pere = self.nationalite_pere.upper()
         self.domicile_pere = self.domicile_pere.upper()
 
         self.mere = self.mere.upper()
         self.lieu_naiss_mere = self.lieu_naiss_mere.upper()
         self.domicile_mere = self.domicile_mere.upper()
-
-        # numerotation automatique
-        if self.archive == False:
-            last_number = 500
-            tot = Jugement.objects.count()
-            numero = last_number + 1
-            madate = datetime.date.today()
-            self.num_jugement = "%s du %s" % (numero, datetime.date.strftime(madate, '%d/%m/%Y'))
 
         super(Jugement, self).save(force_insert, force_update)
 
@@ -143,14 +151,13 @@ class Extrait(models.Model):
     jugement = models.CharField(max_length=5, verbose_name="TRANSCRIPTION DE JUGEMENT SUPPLETIF ?", choices=Jugement_Choice, default="non")
     num_jugement = models.CharField(max_length=255, verbose_name="PRECISER LE NUMERO DU JUGEMENT SUPPLETIF", blank=True)
 
-    # parents
+    # parents - Père
     pere = models.CharField(max_length=250, verbose_name='NOM ET PRENOMS DU PERE', blank=True)
     date_naiss_pere = models.DateField(verbose_name='DATE NAISSANCE PERE', blank=True, null=True)
     lieu_naiss_pere = models.CharField(max_length=250, verbose_name='LIEU NAISSANCE PERE', blank=True)
     nationalite_pere = models.CharField(max_length=250, verbose_name='NATIONALITE DU PERE', blank=True)
     profession_pere = models.CharField(max_length=250, verbose_name='PROFESSION DU PERE', blank=True)
-
-    # parents
+    # parents - Mère
     mere = models.CharField(max_length=250, verbose_name='NOM  ET PRENOMS DE LA MERE')
     date_naiss_mere = models.DateField(verbose_name='DATE NAISSANCE MERE', blank=True, null=True)
     lieu_naiss_mere = models.CharField(max_length=250, verbose_name='LIEU NAISSANCE MERE', blank=True)
@@ -207,7 +214,7 @@ class Extrait(models.Model):
 
 
     def __unicode__(self):
-        return 'Extrait de Naissance de + %s + %s' % (self.nom, self.prenoms)
+        return 'Extrait de Naissance de %s %s' % (self.nom, self.prenoms)
 
 
 class Mariage(models.Model):
@@ -286,7 +293,7 @@ class Mariage(models.Model):
         super(Mariage, self).save(force_insert, force_update)
 
     def __unicode__(self):
-        return 'MARIAGE ENTRE + %s + %s' % (self.demandeur, self.demandeur2)
+        return 'MARIAGE ENTRE %s et %s' % (self.demandeur, self.demandeur2)
 
 
 class Deces(models.Model):
@@ -350,6 +357,6 @@ class Deces(models.Model):
         super(Deces, self).save(force_insert, force_update)
 
     def __unicode__(self):
-        return 'DECES DE + %s + le %s à %s' % (self.nom_et_prenoms, self.date_naiss, self.heure_deces)
+        return 'DECES DE %s le %s à %s' % (self.nom_et_prenoms, self.date_deces, self.heure_deces)
 
 # Create your models here.

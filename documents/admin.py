@@ -6,7 +6,7 @@ from .models import Jugement, Extrait, Mariage, Deces
 
 
 class JugementAdmin(admin.ModelAdmin):
-    list_display = ['num_jugement', 'nom', 'prenoms', 'sexe', 'date_naiss', 'heure_naiss', 'hopital', 'mere', 'username']
+    list_display = ['num_jugement', 'nom', 'prenoms', 'sexe', 'date_naiss', 'hopital', 'mere', 'pere', 'username']
     list_display_links = ['num_jugement', ]
     list_filter = ('hopital',)
     search_fields = ['num_jugement', 'nom', ]
@@ -24,7 +24,7 @@ class JugementAdmin(admin.ModelAdmin):
 class ExtraitsAdmin(admin.ModelAdmin):
     list_display = ['num_extrait', 'nom', 'prenoms','sexe','date_naiss', 'hopital','mere', 'pere', 'EXTRAIT', 'username']
     list_display_links = ['num_extrait',]
-    list_filter = ('annee', 'hopital',)
+    list_filter = ('username', 'annee', 'hopital',)
     search_fields = ['num_extrait', 'nom',]
     ordering = ['-ajouter_le',]
     #exclude=("num_extrait ",)

@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.db import models
 from annoying.functions import get_object_or_None
 from django.core.exceptions import ValidationError
+from sorl.thumbnail import get_thumbnail
+from django.utils.safestring import mark_safe
 
 # Create your models here.
 import datetime
@@ -71,7 +73,7 @@ class Region(models.Model):
         ('seguela', 'SEGUELA'),
     )
     district = models.ForeignKey(Distict, verbose_name="DISTRICT")
-    code = models.CharField(max_length=5, verbose_name="CODE REGION")
+    code = models.CharField(max_length=10, verbose_name="CODE REGION")
     region = models.CharField(max_length=250, verbose_name="REGION", choices=Region, default="worodougou")
     chef_lieu = models.CharField(max_length=250, verbose_name="CHEF LIEU DE REGION", choices=Region_Chef,
                                  default="seguela")
@@ -116,6 +118,22 @@ class Mairie(models.Model):
     def __unicode__(self):
         return "%s" % self.libelle
 
+    def image_tag(self):
+        # used in the admin site model as a "thumbnail"
+        return mark_safe('<img src="{}" width="50" height="50" />'.format(self.image()))
+
+    image_tag.short_description = 'Image'
+
+    def thumb(self):
+        if self.logo:
+            thumb = get_thumbnail(self.logo, "70x70", crop='center', quality=100)
+            return "<image src='%s' />" % thumb.url
+        else:
+            return "Aucun photo"
+
+    thumb.short_description = ('ARMOIRIE')
+    thumb.allow_tags = True
+
     class Meta:
         verbose_name_plural = "MAIRIES"
         verbose_name = "mairie"
@@ -130,13 +148,13 @@ def number():
 
 
 class Centre(models.Model):
-    mairie = models.ForeignKey(Mairie, verbose_name="MAIRIE")
-    code = models.CharField(max_length=5, verbose_name="CODE ETABLISSEMENT SANITAIRE")
+    mairie = models.ForeignKey(Mairie, verbose_name="MAIRIE DE RATTACHEE")
+    code = models.CharField(max_length=10, verbose_name="CODE ETABLISSEMENT SANITAIRE")
     libelle = models.CharField(max_length=500, verbose_name="NOM ETABLISSEMENT SANITAIRE")
     emplacement = models.CharField(max_length=500, verbose_name="EMPLACEMENT DU CENTRE SANITAIRE")
 
     def zcode(self):
-        return self.code.zfill(5).upper()
+        return self.code.zfill(10).upper()
 
     def save(self, force_insert=False, force_update=False):
         if not self.id:

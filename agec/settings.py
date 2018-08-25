@@ -150,7 +150,7 @@ INSTALLED_APPS = (
 
     'documents',
     'parametres',
-    #'sorl',
+    'sorl.thumbnail',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
